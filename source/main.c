@@ -1,4 +1,4 @@
-#include <stdlib.h>
+п»ї#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -8,7 +8,7 @@ void leaderboard();
 int main()
 {
 	char c;
-	while (1) // switch-меню
+	while (1) // switch-РјРµРЅСЋ
 	{
     	puts(" 1. Start game");
     	puts(" 2. Leaderboard");
@@ -16,9 +16,9 @@ int main()
     	c = getch();
     	switch(c)
     	{
-			case '1': game(); break; // вызов game()
-			case '2': leaderboard(); break; // вызов leaderboard()
-			case '3': return 0; // выход
+			case '1': game(); break; // РІС‹Р·РѕРІ game()
+			case '2': leaderboard(); break; // РІС‹Р·РѕРІ leaderboard()
+			case '3': return 0; // РІС‹С…РѕРґ
 			default : puts("Wrong key");
 		}
 	}
@@ -30,18 +30,18 @@ void game()
     FILE *st;
     int lines = 0;
     int random_line;
-    char word_buffer[25]; // буфер для хранения строки (слова) из файла
-    st = fopen("dictionary.txt", "r"); // чтение файла
-    while (fscanf(st, "%s", &word_buffer) != EOF) // вычисление количества строк в файле
+    char word_buffer[25]; // Р±СѓС„РµСЂ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ СЃС‚СЂРѕРєРё (СЃР»РѕРІР°) РёР· С„Р°Р№Р»Р°
+    st = fopen("dictionary.txt", "r"); // С‡С‚РµРЅРёРµ С„Р°Р№Р»Р°
+    while (fscanf(st, "%s", &word_buffer) != EOF) // РІС‹С‡РёСЃР»РµРЅРёРµ РєРѕР»РёС‡РµСЃС‚РІР° СЃС‚СЂРѕРє РІ С„Р°Р№Р»Рµ
 	{
         lines++;
     }
-    random_line = rand() % lines; // выбор слова (выбор случайной строки)
-    rewind(st); // перемещение указателя в начало файла
+    random_line = rand() % lines; // РІС‹Р±РѕСЂ СЃР»РѕРІР° (РІС‹Р±РѕСЂ СЃР»СѓС‡Р°Р№РЅРѕР№ СЃС‚СЂРѕРєРё)
+    rewind(st); // РїРµСЂРµРјРµС‰РµРЅРёРµ СѓРєР°Р·Р°С‚РµР»СЏ РІ РЅР°С‡Р°Р»Рѕ С„Р°Р№Р»Р°
     int i;
     for (i = 0; i < random_line; i++) 
 	{
-		fscanf(st, "%s", word_buffer); // считывание слова, которое будет загадано
+		fscanf(st, "%s", word_buffer); // СЃС‡РёС‚С‹РІР°РЅРёРµ СЃР»РѕРІР°, РєРѕС‚РѕСЂРѕРµ Р±СѓРґРµС‚ Р·Р°РіР°РґР°РЅРѕ
 	}
 	fclose(st);
 	int world_size = strlen(word_buffer);
