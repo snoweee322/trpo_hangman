@@ -29,14 +29,24 @@ void game()
 {
     FILE *st;
     int lines = 0;
-    char word_buffer[25]; // буфер для хранения строки из файла
+    int random_line;
+    char word_buffer[25]; // буфер для хранения строки (слова) из файла
     st = fopen("dictionary.txt", "r"); // чтение файла
     while (fscanf(st, "%s", &word_buffer) != EOF) // вычисление количества строк в файле
 	{
         lines++;
     }
-    printf("%d",lines);
-} 
+    random_line = rand() % lines; // выбор слова (выбор случайной строки)
+    rewind(st); // перемещение указателя в начало файла
+    int i;
+    for (i = 0; i < random_line; i++) 
+	{
+		fscanf(st, "%s", word_buffer); // считывание слова, которое будет загадано
+	}
+	fclose(st);
+	int world_size = strlen(word_buffer);
+	printf("%d", world_size);
+}
 
 void leaderboard()
 {
