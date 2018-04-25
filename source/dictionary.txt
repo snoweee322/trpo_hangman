@@ -21,6 +21,6 @@ teacher
 university
 vault
 warning
-Xenon
+xenon
 yoghurt
 zigzag
