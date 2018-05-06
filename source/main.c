@@ -156,7 +156,7 @@ void survival()
     char word_buffer[25]; // буфер для хранения строки (слова)  из файла
     char letter_array[50]; // массив использованных букв
     int letter_count = 0; 
-    int wrong_letters = 0;
+    int lives = 9;
     int flag = 0;
     int score = 0; // очки
     char letter;
@@ -168,7 +168,59 @@ void survival()
     int *prov = (int*)malloc(4*lines); // массив под проверку встречающихся слов
     for (i = 0; i < lines; i++) prov[i] = 1;
     fclose(st);
-    
+    while (1){
+    	while (!(score == lines*100)) //проверка на повторяющиеся слова 
+		{
+			random_line = rand() % lines; // выбор случайной строки
+    		if (prov[random_line])
+    		{
+    			prov[random_line] = 0;
+    			break;
+			}
+		}
+		st = fopen("dictionary.txt", "r"); // чтение файла
+        rewind(st); // перемещение указателя в начало файла
+        for (i = 0; i < random_line; i++)
+  	    {
+	        fscanf(st, "%s", word_buffer); // считывание слова, которое будет загадано
+	    }
+	    fclose(st);
+	    word_size = strlen(word_buffer); // длина слова
+	    char *hidden_word = (char*)malloc(word_size); // дин массив с отгаданными буквами
+	    for (i = 0; i < word_size; i++) // заполнение массива звездочками (неизвестные буквы)
+        {
+            hidden_word[i] = '*';
+            hidden_word[i+1] = '\0';
+        }
+        hidden_word[0] = word_buffer[0];
+        hidden_word[word_size - 1] = word_buffer[word_size - 1];
+        
+        guessed_letters = word_size - 2; // кол-во неотгаданных букв (счетчик)
+        for (i = 0; i < 50; i++) letter_array[i] = NULL; // массив использованных букв
+        if (word_buffer[word_size - 1] == word_buffer[0]) // проверка первой и последней буквы, чтобы в массиве использованных букв не было двух одинаковых символов
+        {
+          	letter_array[0] = word_buffer[0];
+		}
+        else
+        {
+        	letter_array[1] = word_buffer[word_size - 1];
+        	letter_array[0] = word_buffer[0];
+		}
+		for (i = 1; i < word_size - 1; i++) // проверка не встречаются ли еще в слове первая или последняя буквы
+		{
+			if (word_buffer[i] == word_buffer[0]) 
+			{
+				hidden_word[i] = word_buffer[0];
+				guessed_letters--;
+			}
+			if (word_buffer[i] == word_buffer[word_size - 1]) 
+			{
+				hidden_word[i] = word_buffer[word_size - 1];
+				guessed_letters--;
+			}
+		}
+        letter_count = 2;
+        flag = 0;
     while (guessed_letters >= 0 && wrong_letters <= 9)
     {
         if (flag == 1) // неотгаданная буква
