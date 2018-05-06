@@ -291,7 +291,18 @@ void survival()
     free(prov);
 }
 
-
 void leaderboard()
 {
+	int i;
+  system("CLS");
+  st=fopen("records.dat","rb"); // открытие бинарного файла для чтения
+  i=1;
+  fread(&t1,sizeof(t1),1,st); // чтение из файла структуры t1
+  while (!feof(st))
+  { printf("\n %3d)%10s............................%4d",i,t1.name,t1.sc);
+    fread(&t1,sizeof(t1),1,st);
+    i++;
+  }
+  
+  system("pause");
 }
