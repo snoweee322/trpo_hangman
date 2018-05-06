@@ -3,18 +3,22 @@
 #include <string.h>
 #include <time.h>
 
-struct records{char name[10]; int sc;} t1;
+struct records
+{
+	char name[10];
+	int sc;
+} t1;
 
 void game();
-void leaderboard(FILE *);
+void leaderboard();
 void survival();
 
 void hangman(int n) //виселица
 {
-        switch (n)
-    {
-        case 9: printf("  ____   |@|\n |   |   |@|\n |   o   |@|\n |  /|\\  |@|\n_|_ / \\  |@|  "); break;
-        case 8: printf("  ____   |@|\n |   |   |@|\n |   o   |@|\n |  /|\\  |@|\n_|_ /    |@|  "); break;
+	switch (n)
+	{
+		case 9: printf("  ____   |@|\n |   |   |@|\n |   o   |@|\n |  /|\\  |@|\n_|_ / \\  |@|  "); break;
+		case 8: printf("  ____   |@|\n |   |   |@|\n |   o   |@|\n |  /|\\  |@|\n_|_ /    |@|  "); break;
         case 7: printf("  ____   |@|\n |   |   |@|\n |   o   |@|\n |  /|\\  |@|\n_|_      |@|  "); break;
         case 6: printf("  ____   |@|\n |   |   |@|\n |   o   |@|\n |  /|   |@|\n_|_      |@|  "); break;
         case 5: printf("  ____   |@|\n |   |   |@|\n |   o   |@|\n |   |   |@|\n_|_      |@|  "); break;
@@ -23,7 +27,7 @@ void hangman(int n) //виселица
         case 2: printf("         |@|\n |       |@|\n |       |@|\n |       |@|\n_|_      |@|  "); break;
         case 1: printf("         |@|\n         |@|\n         |@|\n         |@|\n___      |@|  "); break;
         case 0: printf("         |@|\n         |@|\n         |@|\n         |@|\n         |@|  "); break;
-    }
+     }
 }
 
 int main()
@@ -32,7 +36,7 @@ int main()
 	char c;
 	while (1) // switch-меню
 	{
-	    system("cls");
+	    system("clear");
     	puts(" 1. Start game");
     	puts(" 2. Leaderboard");
     	puts(" 3. Exit");
@@ -40,14 +44,13 @@ int main()
     	switch(c)
     	{
             case '1': {
-			            system("cls");
+			            system("clear");
 			            puts(" 1. Normal mode");
 			            puts(" 2. Survival mode");
 			            scanf("%s", &c);
 					    switch(c)
 					    {
 					  	    case '1': game(); break; // вызов game()
-					  	    
 					 	    case '2': survival(); break; // вызов survival()
 					    }
 				      } break;
@@ -66,7 +69,7 @@ void game()
     int random_line;
     char word_buffer[25]; // буфер для хранения строки (слова) из файла
     st = fopen("dictionary.txt", "r"); // чтение файла
-    while (fscanf(st, "%s", &word_buffer) != EOF) // вычисление количества строк в файле
+    while (fscanf(st, "%s", word_buffer) != EOF) // вычисление количества строк в файле
 	{
         lines++;
     }
@@ -87,7 +90,7 @@ void game()
     }
     int guessed_letters = word_size; // кол-во неотгаданных букв (счётчик)
     int wrong_letters = 0; // неправильно отгаданные буквы (до 9)
-    char letter_array[50] = {NULL}; // массив, куда будут вводиться отгадываемые буквы
+    char letter_array[50] = {0}; // массив, куда будут вводиться отгадываемые буквы
     int letter_count = 0;
     int flag = 0;
     while (guessed_letters >= 0 && wrong_letters <= 9)
@@ -97,7 +100,7 @@ void game()
             wrong_letters++;
         }
         flag = 1;
-        system("cls");
+        system("clear");
         printf("A WORD: >> %s <<\n", word_buffer); // ОТЛАДКА
         printf("GUESSED LETTERS: >> %d <<\n", guessed_letters); // ОТЛАДКА
         printf("WRONG LETTERS: >> %d <<\n", wrong_letters); // ОТЛАДКА
@@ -107,7 +110,7 @@ void game()
             printf("%s", word_buffer);
             printf("\nYou won!\nPrint any key to countinue.\n\n");
             free(hidden_word);
-            scanf(" %c");
+            getchar();
             return; // выход в меню
         }
         if (wrong_letters == 9) // условие поражения
@@ -115,7 +118,7 @@ void game()
             printf("%s", word_buffer);
             printf("\nYou lost!\nPrint any key to countinue.\n\n");
             free(hidden_word);
-            scanf(" %c");
+            getchar();
             return; // выход в меню
         }
         printf("%s", hidden_word); // скрытое слово
@@ -164,7 +167,7 @@ void survival()
     int score = 0; // очки
     char letter;
     st = fopen("dictionary.txt", "r"); // чтение файла
-    while (fscanf(st, "%s", &word_buffer) != EOF) // вычисление кол-ва строк в файле
+    while (fscanf(st, "%s", word_buffer) != EOF) // вычисление кол-ва строк в файле
     {
         lines++;
     }
@@ -200,7 +203,7 @@ void survival()
         hidden_word[word_size - 1] = word_buffer[word_size - 1];
         
         guessed_letters = word_size - 2; // кол-во неотгаданных букв (счетчик)
-        for (i = 0; i < 50; i++) letter_array[i] = NULL; // массив использованных букв
+        for (i = 0; i < 50; i++) letter_array[i] = 0; // массив использованных букв
         if (word_buffer[word_size - 1] == word_buffer[0]) // проверка первой и последней буквы, чтобы в массиве использованных букв не было двух одинаковых символов
         {
           	letter_array[0] = word_buffer[0];
@@ -232,7 +235,7 @@ void survival()
                lives--;
             }
             flag = 1;
-            system("cls");
+            system("clear");
             printf("A WORD: >> %s <<\n", word_buffer); // ОТЛАДКА
             printf("GUESSED LETTERS: >> %d <<\n", guessed_letters); // ОТЛАДКА
             printf("Your lives: %d\n",lives);
@@ -249,7 +252,7 @@ void survival()
 	    if (lives == 0) // условия окончания игры
             {
             	free(hidden_word);
-            	system("cls");
+            	system("clear");
                 printf("%s", word_buffer);
                 printf("\nYour score=%d\nDo you want to save the result y/n?\n\n",score);
                 char k;
@@ -257,7 +260,7 @@ void survival()
                 if(k == 'y')
                 {
                     st=fopen("records.dat","ab"); // открытие бинарного файла для записи рекордов
-                    printf("\n name:"); scanf("%s",&t1.name);
+                    printf("\n name:"); scanf("%s",t1.name);
                     t1.sc=score;
                     fwrite(&t1,sizeof(t1),1,st); // записсь структуры в файл
                     fclose(st);
@@ -274,7 +277,7 @@ void survival()
                         guessed_letters--;
                         hidden_word[i] = word_buffer[i];
                     }
-                } else if (strchr(letter_array, letter) || letter <= 96 || letter >= 123) // повтореый ввод или неправильный ввод (a = 97 z = 122 по ascii)
+                } else if (strchr(letter_array, letter) || letter <= 96 || letter >= 123) // повторный ввод или неправильный ввод (a = 97 z = 122 по ascii)
                 {
                     flag = 0;
                 }
@@ -293,16 +296,17 @@ void survival()
 
 void leaderboard()
 {
+	FILE *st;
 	int i;
-  system("CLS");
-  st=fopen("records.dat","rb"); // открытие бинарного файла для чтения
-  i=1;
-  fread(&t1,sizeof(t1),1,st); // чтение из файла структуры t1
-  while (!feof(st))
-  { printf("\n %3d)%10s............................%4d",i,t1.name,t1.sc);
-    fread(&t1,sizeof(t1),1,st);
-    i++;
-  }
-  
-  system("pause");
+	system("clear");
+	st = fopen("records.dat", "rb"); // открытие бинарного файла для чтения
+	i = 1;
+	fread(&t1, sizeof(t1), 1, st); // чтение из файла структуры t1
+	while (!feof(st))
+	{
+		printf("\n %3d)%10s............................%4d",i, t1.name, t1.sc);
+		fread(&t1, sizeof(t1), 1, st);
+		i++;
+	}
+	getchar();
 }
