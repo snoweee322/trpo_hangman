@@ -168,7 +168,8 @@ void survival()
     int *prov = (int*)malloc(4*lines); // массив под проверку встречающихся слов
     for (i = 0; i < lines; i++) prov[i] = 1;
     fclose(st);
-    while (1){
+    while (1)
+    {
     	while (!(score == lines*100)) //проверка на повторяющиеся слова 
 		{
 			random_line = rand() % lines; // выбор случайной строки
@@ -221,34 +222,45 @@ void survival()
 		}
         letter_count = 2;
         flag = 0;
-    while (guessed_letters >= 0 && wrong_letters <= 9)
-    {
-        if (flag == 1) // неотгаданная буква
+        while (guessed_letters > 0) // пока кол-во неотгаданных букв
         {
-            wrong_letters++;
-        }
-        flag = 1;
-        system("cls");
-        printf("A WORD: >> %s <<\n", word_buffer); // ОТЛАДКА
-        printf("GUESSED LETTERS: >> %d <<\n", guessed_letters); // ОТЛАДКА
-        printf("WRONG LETTERS: >> %d <<\n", wrong_letters); // ОТЛАДКА
-        hangman(wrong_letters);
-        if (guessed_letters == 0) // условие победы
-        {
-            printf("%s", word_buffer);
-            printf("\nYou won!\nPrint any key to countinue.\n\n");
-            free(hidden_word);
-            scanf(" %c");
-            return; // выход в меню
-        }
-        if (wrong_letters == 9) // условие поражения
-        {
-            printf("%s", word_buffer);
-            printf("\nYou lost!\nPrint any key to countinue.\n\n");
-            free(hidden_word);
-            scanf(" %c");
-            return; // выход в меню
-        }
+            if (flag == 1) // неотгаданная буква 
+            {
+               lives--;
+            }
+            flag = 1;
+            system("cls");
+            printf("A WORD: >> %s <<\n", word_buffer); // ОТЛАДКА
+            printf("GUESSED LETTERS: >> %d <<\n", guessed_letters); // ОТЛАДКА
+            printf("Your lives: %d\n",lives);
+            printf("Score: %d\n",score);
+            hangman(9 - lives);
+            printf("%s", hidden_word); // скрытое слово
+            printf("\nEntered letters:\n");
+            printf("%s", letter_array); // введенные буквы
+            printf("\nTo exit write '0'");
+            printf("\nPrint a letter: ");
+            letter = -1;
+            if (!lives == 0) scanf(" %c", &letter);
+            if (letter == 48) lives = 0;
+			if (lives == 0) // условия окончания игры
+            {
+            	free(hidden_word);
+            	system("cls");
+                printf("%s", word_buffer);
+                printf("\nYour score=%d\nDo you want to save the result y/n?\n\n",score);
+                char k;
+                scanf("%s",&k);
+                if(k == 'y')
+                {
+                    st=fopen("records.dat","ab"); // открытие бинарного файла для записи рекордов
+                    printf("\n name:"); scanf("%s",&t1.name);
+                    t1.sc=score;
+                    fwrite(&t1,sizeof(t1),1,st); // записсь структуры в файл
+                    fclose(st);
+                }
+                return; // выход в меню
+            }
         printf("%s", hidden_word); // скрытое слово
         printf("\nEntered letters:\n");
         printf("%s", letter_array); // введенные буквы
