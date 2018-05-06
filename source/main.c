@@ -3,8 +3,11 @@
 #include <string.h>
 #include <time.h>
 
+struct records{char name[10]; int sc;} t1;
+
 void game();
-void leaderboard();
+void leaderboard(FILE *);
+void survival();
 
 void hangman(int n) //виселица
 {
