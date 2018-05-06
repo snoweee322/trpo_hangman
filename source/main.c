@@ -36,7 +36,18 @@ int main()
     	c = getchar();
     	switch(c)
     	{
-            case '1': game(); break; // вызов game()
+            case '1': {
+			            system("cls");
+			            puts(" 1. Normal mode");
+			            puts(" 2. Survival mode");
+			            scanf("%s", &c);
+					    switch(c)
+					    {
+					  	    case '1': game(); break; // вызов game()
+					  	    
+					 	    case '2': survival(); break; // вызов survival()
+					    }
+				      } break;
 			case '2': leaderboard(); break; // вызов leaderboard()
 			case '3': return 0; // выход
 			default : puts("Wrong key");
