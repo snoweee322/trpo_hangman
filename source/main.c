@@ -243,7 +243,7 @@ void survival()
             letter = -1;
             if (!lives == 0) scanf(" %c", &letter);
             if (letter == 48) lives = 0;
-			if (lives == 0) // условия окончания игры
+	    if (lives == 0) // условия окончания игры
             {
             	free(hidden_word);
             	system("cls");
@@ -261,35 +261,33 @@ void survival()
                 }
                 return; // выход в меню
             }
-        printf("%s", hidden_word); // скрытое слово
-        printf("\nEntered letters:\n");
-        printf("%s", letter_array); // введенные буквы
-        printf("\nPrint a letter: ");
-        char letter = -1;
-        scanf(" %c", &letter);
-        for (i = 0; i < word_size; i++) // проверка введеных букв
-        {
-            if (word_buffer[i] == letter)
+        for (i = 1; i < word_size - 1; i++) // проверка введенных букв
             {
-                if (!(strchr(hidden_word + i, letter))) // если буква не отгадана
+                if (word_buffer[i] == letter)
+                {
+                    if (!(strchr(hidden_word + i, letter))) // если буква не отгадана
+                    {
+                        flag = 0;
+                        guessed_letters--;
+                        hidden_word[i] = word_buffer[i];
+                    }
+                } else if (strchr(letter_array, letter) || letter <= 96 || letter >= 123) // повтореый ввод или неправильный ввод (a = 97 z = 122 по ascii)
                 {
                     flag = 0;
-                    guessed_letters--;
-                    hidden_word[i] = word_buffer[i];
                 }
-            } else if (strchr(letter_array, letter) || letter <= 96 || letter >= 123) // повторный ввод или неправильный ввод (a = 97 z = 122 по ascii)
+            }
+            if (!(strchr(letter_array, letter) || letter <= 96 || letter >= 123)) // запись ПРАВИЛЬНО введённых букв
             {
-                flag = 0;
+                letter_array[letter_count++] = letter;
             }
         }
-        if (!(strchr(letter_array, letter) || letter <= 96 || letter >= 123)) // запись ПРАВИЛЬНО введённых букв
-        {
-            letter_array[letter_count++] = letter;
-        }
+        free(hidden_word);
+        if(lives < 9 && lives > 0) lives++;
+        if(lives > 0) score+=100;
     }
-    free(hidden_word);
-    return;
+    free(prov);
 }
+
 
 void leaderboard()
 {
