@@ -148,34 +148,27 @@ void game()
 void survival()
 {
     FILE *st;
-    int lines = 0;
-    int random_line;
-    char word_buffer[25]; // буфер для хранения строки (слова) из файла
+    int lines = 0; // кол-во строк
+    int random_line; // случайная строка
+    int i; // счетчик
+    int word_size; // кол-во символов в слове
+    int guessed_letters; // кол-во неотгаданных букв (счетчик)
+    char word_buffer[25]; // буфер для хранения строки (слова)  из файла
+    char letter_array[50]; // массив использованных букв
+    int letter_count = 0; 
+    int wrong_letters = 0;
+    int flag = 0;
+    int score = 0; // очки
+    char letter;
     st = fopen("dictionary.txt", "r"); // чтение файла
-    while (fscanf(st, "%s", &word_buffer) != EOF) // вычисление количества строк в файле
-	{
+    while (fscanf(st, "%s", &word_buffer) != EOF) // вычисление кол-ва строк в файле
+    {
         lines++;
     }
-    random_line = rand() % lines; // выбор слова (выбор случайной строки)
-    rewind(st); // перемещение указателя в начало файла
-    int i;
-    for (i = 0; i < random_line; i++)
-	{
-		fscanf(st, "%s", word_buffer); // считывание слова, которое будет загадано
-	}
-	fclose(st);
-	int word_size = strlen(word_buffer); // кол-во символов в слове
-	char *hidden_word = (char*)malloc(word_size); // дин.массив с отгаданными буквами
-	for (i = 0; i < word_size; i++) // заполнение массива прочерками (неизветные буквы)
-    {
-        hidden_word[i] = '_';
-        hidden_word[i+1] = '\0';
-    }
-    int guessed_letters = word_size; // кол-во неотгаданных букв (счётчик)
-    int wrong_letters = 0; // неправильно отгаданные буквы (до 9)
-    char letter_array[50] = {NULL}; // массив, куда будут вводиться отгадываемые буквы
-    int letter_count = 0;
-    int flag = 0;
+    int *prov = (int*)malloc(4*lines); // массив под проверку встречающихся слов
+    for (i = 0; i < lines; i++) prov[i] = 1;
+    fclose(st);
+    
     while (guessed_letters >= 0 && wrong_letters <= 9)
     {
         if (flag == 1) // неотгаданная буква
