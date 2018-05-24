@@ -9,8 +9,6 @@ void leaderboard();
 
 int main(int argc, char *argv[])
 {
-	FILE *abc;
-	abc =
 	srand(time(NULL));
 	char c;
 	while (1) // switch-меню

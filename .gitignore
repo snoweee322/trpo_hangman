@@ -16,4 +16,5 @@
 *.sql
 *.sqlite
 bin/program
+bin/*.dat
 build/*.o
