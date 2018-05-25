@@ -3,6 +3,7 @@
 #include <string.h>
 #include "game.h"
 #include <stdbool.h>
+#include "functions.h"
 
 void hangman(int n);
 
@@ -11,74 +12,6 @@ struct records
 	char name[10];
 	int sc;
 } t1;
-
-bool victory_check(int guessed_letters, char *word_buffer, char *hidden_word)
-{
-	if (guessed_letters == 0) // условие победы
-	{
-		printf("%s", word_buffer);
-		printf("\nYou won!\nPrint any key to countinue.\n\n");
-		free(hidden_word);
-		getchar();
-		return true;
-	}
-	return false;
-}
-
-bool defeat_check(int wrong_letters, char *word_buffer, char *hidden_word)
-{
-	if (wrong_letters == 9) // условие поражения
-	{
-		printf("%s", word_buffer);
-		printf("\nYou lost!\nPrint any key to countinue.\n\n");
-		free(hidden_word);
-		getchar();
-		return true;
-	}
-	return false;
-}
-
-bool wrong_letter_check(int flag, int *wrong_letters)
-{
-	if (flag == 1) // неотгаданная буква
-	{
-		(*wrong_letters)++;
-		return true;
-	}
-	return false;
-}
-
-bool printed_letters(char *letter_array, char letter, int *letter_count)
-{
-	if (!(strchr(letter_array, letter) || letter <= 96 || letter >= 123)) // запись ПРАВИЛЬНО введённой буквы
-	{
-		letter_array[(*letter_count)++] = letter;
-		return true;
-	}
-	return false;
-}
-
-bool letter_guessed(char *hidden_word, int i, char letter, int *flag, int *guessed_letters, char *word_buffer)
-{
-	if (!(strchr(hidden_word + i, letter))) // если буква ещё не была отгадана
-	{
-		*flag = 0;
-		(*guessed_letters)--;
-		hidden_word[i] = word_buffer[i];
-		return true;
-	}
-	return false;
-}
-
-bool wrong_input(char *letter_array, char letter, int *flag)
-{
-	if (strchr(letter_array, letter) || letter <= 96 || letter >= 123) // повторный ввод или неправильный ввод (a = 97 z = 122 по ASCII)
-	{
-		*flag = 0;
-		return true;
-	}
-	return false;
-}
 
 void game()
 {
@@ -120,8 +53,22 @@ void game()
 		printf("GUESSED LETTERS: >> %d <<\n", guessed_letters); // ОТЛАДКА
 		printf("WRONG LETTERS: >> %d <<\n", wrong_letters); // ОТЛАДКА
 		hangman(wrong_letters);
-		if (victory_check(guessed_letters, word_buffer, hidden_word) == true) return; // условие победы
-		if (defeat_check(wrong_letters, word_buffer, hidden_word) == true) return; // условие поражения
+		if (victory_check(guessed_letters, word_buffer, hidden_word) == true)
+		{
+			printf("%s", word_buffer);
+			printf("\nYou won!\nPrint any key to continue.\n\n");
+			free(hidden_word);
+			getchar(); 
+			return; // условие победы
+		}
+		if (defeat_check(wrong_letters, word_buffer, hidden_word) == true)
+		{
+			printf("%s", word_buffer);
+			printf("\nYou lost!\nPrint any key to continue.\n\n");
+			free(hidden_word);
+			getchar();
+			return; // условие поражения
+		}
 		printf("%s", hidden_word); // скрытое слово
 		printf("\nEntered letters:\n");
 		printf("%s", letter_array); // введенные буквы
@@ -140,16 +87,6 @@ void game()
 	}
 	free(hidden_word);
 	return;
-}
-
-bool random_line_check(int *prov, int random_line)
-{
-	if (prov[random_line])
-	{
-		prov[random_line] = 0;
-		return true;
-	}
-	return false;
 }
 
 void survival()
@@ -180,8 +117,11 @@ void survival()
 		while (!(score == lines*100)) // проверка на повторяющиеся слова
 		{
 			random_line = rand() % lines; // выбор случайной строки
-			if (random_line_check(prov, random_line) == true)
-			break;
+			if (prov[random_line])
+			{
+				prov[random_line] = 0;
+				break;
+			}
 		}
 		st = fopen("dictionary.txt", "r"); // чтение файла
 		rewind(st); // перемещение указателя в начало файла
