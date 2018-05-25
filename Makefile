@@ -1,10 +1,10 @@
 all: program
 
 program: build/main.o build/game.o build/hangman.o build/functions.o bin
-	gcc -Wall -Werror build/main.o build/game.o build/hangman.o build/functions.o -lm -o bin/program
+	gcc -Wall -Werror build/main.o build/game.o build/hangman.o build/functions.o -o bin/program
 
 test: build/test.o build/functions.o bin
-	gcc -Wall -Werror build/test.o build/functions.o -lm -o bin/test
+	gcc -Wall -Werror build/test.o build/functions.o -o bin/test
 
 build/test.o: test/test.c
 	gcc -Wall -Werror -I thirdparty -I source -c test/test.c -o build/test.o
@@ -30,5 +30,5 @@ bin:
 .PHONY: clean
 
 clean:
-	rm -rf bin/program build/*.o
+	rm -rf bin/program build/*.o bin/test
 
